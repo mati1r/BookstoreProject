@@ -1,0 +1,45 @@
+ALTER TABLE autor_ksiazka DROP CONSTRAINT autor_ksiazka_autor_fk;
+
+ALTER TABLE autor_ksiazka DROP CONSTRAINT autor_ksiazka_ksiazka_fk;
+
+ALTER TABLE gatunek_ksiazka DROP CONSTRAINT gatunek_ksiazka_ksiazka_fk;
+
+ALTER TABLE gatunek_ksiazka DROP CONSTRAINT gatunek_ksiazka_gatunek_fk;
+
+ALTER TABLE ksiazka_historia DROP CONSTRAINT historia_zamowienia_fk; 
+
+ALTER TABLE ksiazka_historia DROP CONSTRAINT ksiazka_historia_fk;
+
+ALTER TABLE magazyn DROP CONSTRAINT magazyn_ksiazka_fk;
+
+ALTER TABLE pracownik DROP CONSTRAINT pracownik_stanowisko_fk;
+
+ALTER TABLE historia_zamowien DROP CONSTRAINT zamowienia_klient_fk;
+
+ALTER TABLE historia_zamowien DROP CONSTRAINT zamowienia_platnosc_fk;
+
+ALTER TABLE historia_zamowien DROP CONSTRAINT zamowienia_pracownik_fk;
+
+DROP TABLE autor_ksiazka;
+
+DROP TABLE gatunek_ksiazka;
+
+DROP TABLE ksiazka_historia;
+
+DROP TABLE klient;
+
+DROP TABLE magazyn;
+
+DROP TABLE platnosc;
+
+DROP TABLE pracownik;
+
+DROP TABLE historia_zamowien;
+
+DROP TABLE gatunek;
+
+DROP TABLE autor;
+
+DROP TABLE ksiazka;
+
+DROP TABLE stanowisko;

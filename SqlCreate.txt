@@ -1,0 +1,147 @@
+CREATE TABLE autor (
+    id_autora INTEGER NOT NULL,
+    imie      VARCHAR2(20) NOT NULL,
+    nazwisko  VARCHAR2(25) NOT NULL
+);
+
+ALTER TABLE autor ADD CONSTRAINT autor_pk PRIMARY KEY ( id_autora );
+
+CREATE TABLE autor_ksiazka (
+    id_autora  INTEGER NOT NULL,
+    id_ksiazki INTEGER NOT NULL
+);
+
+ALTER TABLE autor_ksiazka ADD CONSTRAINT autor_ksiazka_pk PRIMARY KEY ( id_autora, id_ksiazki );
+
+CREATE TABLE gatunek (
+    id_gatunku INTEGER NOT NULL,
+    nazwa      VARCHAR2(25) NOT NULL
+);
+
+ALTER TABLE gatunek ADD CONSTRAINT gatunek_pk PRIMARY KEY ( id_gatunku );
+
+CREATE TABLE gatunek_ksiazka (
+    id_gatunku INTEGER NOT NULL,
+    id_ksiazki INTEGER NOT NULL
+);
+
+ALTER TABLE gatunek_ksiazka ADD CONSTRAINT gatunek_ksiazka_pk PRIMARY KEY ( id_gatunku, id_ksiazki );
+
+CREATE TABLE historia_zamowien (
+    id_historii   INTEGER NOT NULL,
+    id_platnosci  INTEGER NOT NULL,
+    id_klienta    INTEGER,
+    id_pracownika INTEGER NOT NULL,
+    data_zamowienia  DATE NOT NULL
+);
+
+ALTER TABLE historia_zamowien ADD CONSTRAINT historia_zamowien_pk PRIMARY KEY ( id_historii );
+
+CREATE TABLE klient (
+    id_klienta INTEGER NOT NULL,
+    username       VARCHAR2(20) NOT NULL,
+    password   VARCHAR2(25) NOT NULL,
+    mail       VARCHAR2(40) NOT NULL,
+    imie       VARCHAR2(20),
+    nazwisko   VARCHAR2(40)
+);
+
+ALTER TABLE klient ADD CONSTRAINT klient_pk PRIMARY KEY ( id_klienta );
+
+CREATE TABLE ksiazka (
+    id_ksiazki  INTEGER NOT NULL,
+    wydawnictwo VARCHAR2(25) NOT NULL,
+    tytul       VARCHAR2(40) NOT NULL,
+    rok_wydania INTEGER NOT NULL,
+    cena        DECIMAL(5,2) NOT NULL,
+    zdjecie     BLOB
+);
+
+ALTER TABLE ksiazka ADD CONSTRAINT ksiazka_pk PRIMARY KEY ( id_ksiazki );
+
+CREATE TABLE ksiazka_historia (
+    id_ksiazki  INTEGER NOT NULL,
+    id_historii INTEGER NOT NULL,
+    ilosc       INTEGER NOT NULL
+);
+
+ALTER TABLE ksiazka_historia ADD CONSTRAINT ksiazka_historia_pk PRIMARY KEY ( id_ksiazki, id_historii );
+
+CREATE TABLE magazyn (
+    id_wpisu INTEGER NOT NULL,
+    id_ksiazki  INTEGER NOT NULL,
+    ilosc_sztuk INTEGER NOT NULL
+);
+
+ALTER TABLE magazyn ADD CONSTRAINT magazyn_pk PRIMARY KEY ( id_wpisu );
+
+CREATE TABLE platnosc (
+    id_platnosci     INTEGER NOT NULL,
+    kwota            NUMBER(10,2) NOT NULL,
+    rodzaj_platnosci VARCHAR2(25) NOT NULL
+);
+
+ALTER TABLE platnosc ADD CONSTRAINT platnosc_pk PRIMARY KEY ( id_platnosci );
+
+CREATE TABLE pracownik (
+    id_pracownika INTEGER NOT NULL,
+    imie          VARCHAR2(20) NOT NULL,
+    nazwisko      VARCHAR2(25) NOT NULL,
+    id_stanowiska INTEGER NOT NULL
+);
+
+ALTER TABLE pracownik ADD CONSTRAINT pracownik_pk PRIMARY KEY ( id_pracownika );
+
+CREATE TABLE stanowisko (
+    id_stanowiska INTEGER NOT NULL,
+    nazwa         VARCHAR2(25) NOT NULL
+);
+
+ALTER TABLE stanowisko ADD CONSTRAINT stanowisko_pk PRIMARY KEY ( id_stanowiska );
+
+ALTER TABLE autor_ksiazka
+    ADD CONSTRAINT autor_ksiazka_autor_fk FOREIGN KEY ( id_autora )
+        REFERENCES autor ( id_autora );
+
+ALTER TABLE autor_ksiazka
+    ADD CONSTRAINT autor_ksiazka_ksiazka_fk FOREIGN KEY ( id_ksiazki )
+        REFERENCES ksiazka ( id_ksiazki );
+
+ALTER TABLE gatunek_ksiazka
+    ADD CONSTRAINT gatunek_ksiazka_ksiazka_fk FOREIGN KEY ( id_ksiazki )
+        REFERENCES ksiazka ( id_ksiazki );
+
+ALTER TABLE gatunek_ksiazka
+    ADD CONSTRAINT gatunek_ksiazka_gatunek_fk FOREIGN KEY ( id_gatunku )
+        REFERENCES gatunek ( id_gatunku );
+
+ALTER TABLE ksiazka_historia
+    ADD CONSTRAINT historia_zamowienia_fk FOREIGN KEY ( id_historii )
+        REFERENCES historia_zamowien ( id_historii )
+        ON DELETE CASCADE;
+
+ALTER TABLE ksiazka_historia
+    ADD CONSTRAINT ksiazka_historia_fk FOREIGN KEY ( id_ksiazki )
+        REFERENCES ksiazka ( id_ksiazki );
+
+ALTER TABLE magazyn
+    ADD CONSTRAINT magazyn_ksiazka_fk FOREIGN KEY ( id_ksiazki )
+        REFERENCES ksiazka ( id_ksiazki );
+
+ALTER TABLE pracownik
+    ADD CONSTRAINT pracownik_stanowisko_fk FOREIGN KEY ( id_stanowiska )
+        REFERENCES stanowisko ( id_stanowiska )
+        ON DELETE CASCADE;
+
+ALTER TABLE historia_zamowien
+    ADD CONSTRAINT zamowienia_klient_fk FOREIGN KEY ( id_klienta )
+        REFERENCES klient ( id_klienta )
+        ON DELETE CASCADE;
+
+ALTER TABLE historia_zamowien
+    ADD CONSTRAINT zamowienia_platnosc_fk FOREIGN KEY ( id_platnosci )
+        REFERENCES platnosc ( id_platnosci );
+
+ALTER TABLE historia_zamowien
+    ADD CONSTRAINT zamowienia_pracownik_fk FOREIGN KEY ( id_pracownika )
+        REFERENCES pracownik ( id_pracownika );
